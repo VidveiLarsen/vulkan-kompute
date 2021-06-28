@@ -41,15 +41,18 @@ Tensor::rebuild(void* data,
                 uint32_t elementMemorySize)
 {
     KP_LOG_DEBUG("Kompute Tensor rebuilding with size {}", elementTotalCount);
-
-    this->mSize = elementTotalCount;
-    this->mDataTypeMemorySize = elementMemorySize;
+    
+    auto device = this->mDevice;
 
     if (this->mPrimaryBuffer || this->mPrimaryMemory) {
         KP_LOG_DEBUG(
-          "Kompute Tensor destroying existing resources before rebuild");
+          "Kompute Tensor destroying existing resources before rebuilda");
         this->destroy();
     }
+
+    this->mSize = elementTotalCount;
+    this->mDataTypeMemorySize = elementMemorySize;
+    this->mDevice = device;
 
     this->allocateMemoryCreateGPUResources();
     this->mapRawData();
